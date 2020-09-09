@@ -2,6 +2,10 @@ package com.github.bhlangonijr.chesslib.move;
 
 import org.junit.Test;
 
+import pbaioni.chesslib.move.Move;
+import pbaioni.chesslib.move.MoveConversionException;
+import pbaioni.chesslib.move.MoveList;
+
 import static org.junit.Assert.assertEquals;
 
 /**

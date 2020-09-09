@@ -1,8 +1,9 @@
 package com.github.bhlangonijr.chesslib.bitboard;
 
-import com.github.bhlangonijr.chesslib.Bitboard;
-import com.github.bhlangonijr.chesslib.Square;
 import org.junit.Test;
+
+import pbaioni.chesslib.Bitboard;
+import pbaioni.chesslib.Square;
 
 import static org.junit.Assert.assertEquals;
 

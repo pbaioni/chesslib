@@ -1,7 +1,8 @@
 package com.github.bhlangonijr.chesslib;
 
-import com.github.bhlangonijr.chesslib.game.Game;
-import com.github.bhlangonijr.chesslib.pgn.PgnIterator;
+import pbaioni.chesslib.game.Game;
+import pbaioni.chesslib.pgn.PgnIterator;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,7 +1,12 @@
 package com.github.bhlangonijr.chesslib.move;
 
-import com.github.bhlangonijr.chesslib.*;
 import org.junit.Test;
+
+import pbaioni.chesslib.*;
+import pbaioni.chesslib.move.Move;
+import pbaioni.chesslib.move.MoveGenerator;
+import pbaioni.chesslib.move.MoveGeneratorException;
+import pbaioni.chesslib.move.MoveList;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,11 +1,13 @@
 package com.github.bhlangonijr.chesslib;
 
-import com.github.bhlangonijr.chesslib.game.Game;
-import com.github.bhlangonijr.chesslib.move.Move;
-import com.github.bhlangonijr.chesslib.move.MoveList;
-import com.github.bhlangonijr.chesslib.pgn.PgnException;
-import com.github.bhlangonijr.chesslib.pgn.PgnHolder;
-import com.github.bhlangonijr.chesslib.util.LargeFile;
+import pbaioni.chesslib.Board;
+import pbaioni.chesslib.game.Game;
+import pbaioni.chesslib.move.Move;
+import pbaioni.chesslib.move.MoveList;
+import pbaioni.chesslib.pgn.PgnException;
+import pbaioni.chesslib.pgn.PgnHolder;
+import pbaioni.chesslib.util.LargeFile;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

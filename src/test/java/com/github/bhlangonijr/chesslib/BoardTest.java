@@ -1,9 +1,13 @@
 package com.github.bhlangonijr.chesslib;
 
-import com.github.bhlangonijr.chesslib.move.Move;
-import com.github.bhlangonijr.chesslib.move.MoveGenerator;
-import com.github.bhlangonijr.chesslib.move.MoveGeneratorException;
-import com.github.bhlangonijr.chesslib.move.MoveList;
+import pbaioni.chesslib.Board;
+import pbaioni.chesslib.Piece;
+import pbaioni.chesslib.Square;
+import pbaioni.chesslib.move.Move;
+import pbaioni.chesslib.move.MoveGenerator;
+import pbaioni.chesslib.move.MoveGeneratorException;
+import pbaioni.chesslib.move.MoveList;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
