@@ -16,15 +16,21 @@
 
 package pbaioni.chesslib;
 
+import static pbaioni.chesslib.Constants.emptyMove;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import pbaioni.chesslib.game.GameContext;
+import pbaioni.chesslib.move.Influence;
+import pbaioni.chesslib.move.InfluenceGenerator;
 import pbaioni.chesslib.move.Move;
 import pbaioni.chesslib.move.MoveGenerator;
 import pbaioni.chesslib.move.MoveList;
-
-import static pbaioni.chesslib.Constants.emptyMove;
-
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Chessboard data structure
@@ -1436,6 +1442,10 @@ public class Board implements Cloneable, BoardEvent {
      */
     public String getPositionId() {
         return getFen(false);
+    }
+    
+    public Influence getInfluence() {
+    	return InfluenceGenerator.generateInfluence(this);
     }
 
     /**

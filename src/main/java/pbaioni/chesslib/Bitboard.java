@@ -489,6 +489,19 @@ public class Bitboard {
         }
         return pawnAttacks & occupied;
     }
+    
+
+    public static long getAbsolutePawnCaptures(Side side, Square square,
+                                       long occupied, Square enPassant) {
+        long pawnAttacks = (side.equals(Side.WHITE) ?
+                whitePawnAttacks[square.ordinal()] :
+                blackPawnAttacks[square.ordinal()]);
+        if (!enPassant.equals(Square.NONE)) {
+            long ep = enPassant.getBitboard();
+            occupied |= side.equals(Side.WHITE) ? ep << 8L : ep >> 8L;
+        }
+        return pawnAttacks;
+    }
 
 
     /**
