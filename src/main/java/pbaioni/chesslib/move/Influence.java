@@ -20,12 +20,6 @@ public class Influence {
 	public void setInfluence(HashMap<Square, Integer> influence) {
 		this.influence = influence;
 	}
-
-	@Override
-	public String toString() {
-		return "Influence [influence=" + influence + "]";
-	}
-
 	
 	public void addSingleInfluence(Square square, Side side) {
 		
@@ -71,6 +65,9 @@ public class Influence {
 		
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Influence [influence=" + influence + "]";
+	}
 	
 }

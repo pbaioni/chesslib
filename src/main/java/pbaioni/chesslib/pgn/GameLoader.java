@@ -32,7 +32,7 @@ import java.util.UUID;
  */
 public class GameLoader {
 
-    public static Game loadNextGame(Iterator<String> iterator) {
+    public static Game loadNextGame(Iterator<String> iterator) throws Exception {
 
         Event event = null;
         Round round = null;
@@ -100,6 +100,7 @@ public class GameLoader {
                                     round = GameFactory.newRound(event, 1);
                                     event.getRound().put(1, round);
                                 }
+                                
                                 if (game == null) {
                                     game = GameFactory.newGame(UUID.randomUUID().toString(), round);
                                     game.setDate(event.getStartDate());

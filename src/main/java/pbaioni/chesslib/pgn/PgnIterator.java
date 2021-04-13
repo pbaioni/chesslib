@@ -24,66 +24,73 @@ import java.util.Iterator;
 /**
  * The type Pgn Iterator.
  * <p>
- * The pgn iterator permits iterating over large PGN files without piling up every game in the memory
+ * The pgn iterator permits iterating over large PGN files without piling up
+ * every game in the memory
  */
 public class PgnIterator implements Iterable<Game> {
 
-    private Iterator<String> pgnLines;
+	private Iterator<String> pgnLines;
 
-    /**
-     * Instantiates a new Pgn holder.
-     *
-     * @param filename the filename
-     * @throws Exception reading the file
-     */
-    public PgnIterator(String filename) throws Exception {
+	/**
+	 * Instantiates a new Pgn holder.
+	 *
+	 * @param filename the filename
+	 * @throws Exception reading the file
+	 */
+	public PgnIterator(String filename) throws Exception {
 
-        this(new LargeFile(filename));
-    }
+		this(new LargeFile(filename));
+	}
 
-    public PgnIterator(LargeFile file) {
+	public PgnIterator(LargeFile file) {
 
-        this.pgnLines = file.iterator();
-    }
+		this.pgnLines = file.iterator();
+	}
 
-    public PgnIterator(Iterable<String> pgnLines) {
+	public PgnIterator(Iterable<String> pgnLines) {
 
-        this.pgnLines = pgnLines.iterator();
-    }
+		this.pgnLines = pgnLines.iterator();
+	}
 
-    public PgnIterator(Iterator<String> pgnLines) {
+	public PgnIterator(Iterator<String> pgnLines) {
 
-        this.pgnLines = pgnLines;
-    }
+		this.pgnLines = pgnLines;
+	}
 
+	@Override
+	public Iterator<Game> iterator() {
+		return new GameIterator();
+	}
 
-    @Override
-    public Iterator<Game> iterator() {
-        return new GameIterator();
-    }
+	private class GameIterator implements Iterator<Game> {
+		private Game game;
 
-    private class GameIterator implements Iterator<Game> {
-        private Game game;
+		public boolean hasNext() {
 
-        public boolean hasNext() {
+				try {
+					game = GameLoader.loadNextGame(pgnLines);
+				} catch (Exception e) {
+					System.out.println("Failed loading a game");
+					return true;
+				}
 
-            game = GameLoader.loadNextGame(pgnLines);
-            return game != null;
-        }
+			return game != null;
+		}
 
-        public Game next() {
-            return game;
-        }
+		public Game next() {
+			return game;
+		}
 
-        public void remove() {
-        }
-    }
+		public void remove() {
+		}
 
-    @Override
-    protected void finalize() throws Throwable {
-        if (pgnLines instanceof LargeFile) {
-            ((LargeFile) (pgnLines)).close();
-        }
-        super.finalize();
-    }
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (pgnLines instanceof LargeFile) {
+			((LargeFile) (pgnLines)).close();
+		}
+		super.finalize();
+	}
 }
