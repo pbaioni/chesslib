@@ -47,7 +47,8 @@ public class Game {
     private MoveList halfMoves = new MoveList();
     private Map<Integer, MoveList> variations;
     private Map<Integer, String> commentary;
-    private Map<Integer, String> nag;
+    private Map<Integer, String> graphics;
+	private Map<Integer, String> nag;
     private Map<String, String> property;
 
     private String fen;
@@ -271,6 +272,18 @@ public class Game {
     public void setCommentary(Map<Integer, String> commentary) {
         this.commentary = commentary;
     }
+    
+    public void setComment(Integer index, String comment) {
+        this.commentary.put(index, comment);
+    }
+    
+    public Map<Integer, String> getGraphics() {
+		return graphics;
+	}
+
+	public void setGraphics(Map<Integer, String> graphics) {
+		this.graphics = graphics;
+	}
 
     /**
      * Gets nag.
@@ -779,7 +792,7 @@ public class Game {
                     if (getCommentary() == null) {
                         setCommentary(new HashMap<Integer, String>());
                     }
-                    getCommentary().put(variantIndex, comment.toString());
+                    setComment(variantIndex, comment.toString());
                 }
                 comment = null;
                 continue;
