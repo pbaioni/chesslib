@@ -73,6 +73,7 @@ public class Game {
         this.result = GameResult.ONGOING;
         this.initialPosition = 0;
         this.setPosition(0);
+        this.moveText = new StringBuilder();
     }
 
     private static String makeProp(String name, String value) {
@@ -274,6 +275,8 @@ public class Game {
     }
     
     public void setComment(Integer index, String comment) {
+    	
+    	//TODO: extract graphics
         this.commentary.put(index, comment);
     }
     
@@ -696,17 +699,11 @@ public class Game {
     public void setMoveText(StringBuilder moveText) {
         this.moveText = moveText;
     }
-
-    /**
-     * Load a MoveText from a PGN file into the Game object
-     *
-     * @throws Exception the exception
-     */
-    public void loadMoveText() throws Exception {
-        if (getMoveText() != null) {
-            loadMoveText(getMoveText());
-        }
+    
+    public void appendMoveText(String text) {
+    	this.moveText.append(text);
     }
+
 
     /**
      * Load a MoveText from a PGN file into the Game object
@@ -714,9 +711,17 @@ public class Game {
      * @param moveText the move text
      * @throws Exception the exception
      */
-    public void loadMoveText(StringBuilder moveText) throws Exception {
+    public void loadMoveText() throws Exception {
+    	
+		// clear game result
+		StringUtil.replaceAll(moveText, "1-0", "");
+		StringUtil.replaceAll(moveText, "0-1", "");
+		StringUtil.replaceAll(moveText, "1/2-1/2", "");
+		StringUtil.replaceAll(moveText, "*", "");
 
+		setPlyCount(getHalfMoves().size() + "");
         getHalfMoves().clear();
+        
         if (getVariations() != null) {
             getVariations().clear();
         }

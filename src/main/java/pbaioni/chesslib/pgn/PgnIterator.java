@@ -67,12 +67,7 @@ public class PgnIterator implements Iterable<Game> {
 
 		public boolean hasNext() {
 
-				try {
-					game = GameLoader.loadNextGame(pgnLines);
-				} catch (Exception e) {
-					System.out.println("Failed loading a game");
-					return true;
-				}
+			//DO NOTHING
 
 			return game != null;
 		}

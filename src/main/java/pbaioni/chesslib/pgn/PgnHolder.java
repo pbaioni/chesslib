@@ -34,7 +34,7 @@ public class PgnHolder {
 
     private final Map<String, Event> event = new HashMap<String, Event>();
     private final Map<String, Player> player = new HashMap<String, Player>();
-    private final List<Game> games = new ArrayList<Game>();
+    private List<Game> games = new ArrayList<Game>();
     private final List<PgnLoadListener> listener = new ArrayList<PgnLoadListener>();
     private String fileName;
     private Integer size;
@@ -133,17 +133,10 @@ public class PgnHolder {
      */
     public void loadPgn(LargeFile file) throws Exception {
 
-        size = 0;
-
-        PgnIterator games = new PgnIterator(file);
-
-        try {
-            for (Game game : games) {
-                addGame(game);
-            }
-        } finally {
-            file.close();
+        for(Game game : GameLoader.loadGames(file.iterator())){
+        	games.add(game);
         }
+
     }
 
     /**
