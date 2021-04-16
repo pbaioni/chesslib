@@ -99,8 +99,7 @@ public class GameLoader {
 						}
 						case "result":
 
-							GameResult r = GameResult.fromNotation(p.value);
-							game.setResult(r);
+							game.setResult(GameResult.fromNotation(p.value));
 
 							break;
 						case "plycount":

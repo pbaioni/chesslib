@@ -432,9 +432,9 @@ public class Game {
         } else {
             sb.append(moveCounter);
             if (moveCounter % 2 == 0) {
-                sb.append(".. ");
+                sb.append("...");
             } else {
-                sb.append(". ");
+                sb.append(".");
             }
             final String[] sanArray = getHalfMoves().toSanArray();
             for (int i = 0; i < sanArray.length; i++) {
@@ -442,8 +442,7 @@ public class Game {
                 index++;
                 variantIndex++;
 
-                sb.append(san);
-                sb.append(' ');
+                sb.append(" " + san);
 
                 if (sb.length() - lastSize > 80) {
                     sb.append("\n");
@@ -460,8 +459,8 @@ public class Game {
                 if (getCommentary() != null) {
                     String comment = getCommentary().get(variantIndex);
                     if (comment != null) {
-                        sb.append("{");
-                        sb.append(comment);
+                        sb.append(" {");
+                        sb.append(comment.trim());
                         sb.append("}");
                     }
                 }
@@ -471,8 +470,7 @@ public class Game {
                         variantIndex = translateVariation(sb, var, -1,
                                 variantIndex, index, moveCounter, lastSize);
                         if (index % 2 != 0) {
-                            sb.append(moveCounter);
-                            sb.append("... ");
+                            sb.append(" " + moveCounter + "...");
                         }
                     }
                 }
@@ -480,12 +478,11 @@ public class Game {
                         index % 2 == 0 && index >= 2) {
                     moveCounter++;
 
-                    sb.append(moveCounter);
-                    sb.append(". ");
+                    sb.append(" " + moveCounter + ".");
                 }
             }
         }
-        sb.append(getResult().getDescription());
+        sb.append(" " + getResult().getDescription());
         return sb.toString();
 
 
@@ -496,7 +493,7 @@ public class Game {
         final int variantIndexOld = variantIndex;
         if (variation != null) {
             boolean terminated = false;
-            sb.append("(");
+            sb.append(" (");
             int i = 0;
             int mc = moveCounter;
             int idx = index;
@@ -506,22 +503,22 @@ public class Game {
                 if (i == 0) {
                     sb.append(mc);
                     if (idx % 2 == 0) {
-                        sb.append("... ");
+                        sb.append("...");
                     } else {
-                        sb.append(". ");
+                        sb.append(".");
                     }
                 }
 
                 variantIndex++;
-
-                sb.append(sanMove);
-                sb.append(' ');
+                
+                sb.append(" " + sanMove);
+                
                 final MoveList child = getVariations().get(variantIndex);
                 if (child != null) {
                     if (i == sanArray.length - 1 &&
                             variantIndexOld != child.getParent()) {
                         terminated = true;
-                        sb.append(") ");
+                        sb.append(")");
                     }
                     variantIndex = translateVariation(sb, child, variantIndexOld,
                             variantIndex, idx, mc, lastSize);
@@ -530,14 +527,14 @@ public class Game {
                         && i < sanArray.length - 1) {
                     mc++;
 
-                    sb.append(mc);
-                    sb.append(". ");
+                    sb.append(" " + mc + ".");
+
                 }
                 idx++;
 
             }
             if (!terminated) {
-                sb.append(") ");
+                sb.append(")");
             }
 
         }
@@ -713,12 +710,7 @@ public class Game {
      */
     public void loadMoveText() throws Exception {
     	
-		// clear game result
-		StringUtil.replaceAll(moveText, "1-0", "");
-		StringUtil.replaceAll(moveText, "0-1", "");
-		StringUtil.replaceAll(moveText, "1/2-1/2", "");
-		StringUtil.replaceAll(moveText, "*", "");
-
+    	//cleaning infos from previous movetext if any
 		setPlyCount(getHalfMoves().size() + "");
         getHalfMoves().clear();
         
@@ -731,14 +723,21 @@ public class Game {
         if (getNag() != null) {
             getNag().clear();
         }
+        
+		// cleaning movetext
+        StringBuilder clearMoveText = new StringBuilder(moveText);
+		StringUtil.replaceAll(clearMoveText, "1-0", "");
+		StringUtil.replaceAll(clearMoveText, "0-1", "");
+		StringUtil.replaceAll(clearMoveText, "1/2-1/2", "");
+		StringUtil.replaceAll(clearMoveText, "*", "");
 
-        StringUtil.replaceAll(moveText, "\n", " \n ");
-        StringUtil.replaceAll(moveText, "{", " { ");
-        StringUtil.replaceAll(moveText, "}", " } ");
-        StringUtil.replaceAll(moveText, "(", " ( ");
-        StringUtil.replaceAll(moveText, ")", " ) ");
+        StringUtil.replaceAll(clearMoveText, "\n", " \n ");
+        StringUtil.replaceAll(clearMoveText, "{", " { ");
+        StringUtil.replaceAll(clearMoveText, "}", " } ");
+        StringUtil.replaceAll(clearMoveText, "(", " ( ");
+        StringUtil.replaceAll(clearMoveText, ")", " ) ");
 
-        String text = moveText.toString();
+        String text = clearMoveText.toString();
         if (text == null) {
             return;
         }
