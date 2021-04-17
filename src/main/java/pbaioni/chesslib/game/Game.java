@@ -260,7 +260,7 @@ public class Game {
     	//inserting main line
     	for(Move move : getHalfMoves()) {
     		String uciMove = (move.getFrom().name() + move.getTo().name()).toLowerCase();
-    		allPositions.add(new GamePosition(board.getFen(), uciMove, ply));
+    		allPositions.add(new GamePosition(board.getFen(), move, ply));
     		board.doMove(move);
     		ply++;
     	}
@@ -278,7 +278,7 @@ public class Game {
             Integer variantPly = allPositions.get(index-1).getPly();
             for(Move move : variationMoves) {
             	String uciMove = (move.getFrom().name() + move.getTo().name()).toLowerCase();
-            	GamePosition variationPosition = new GamePosition(variationBoard.getFen(), uciMove, variantPly);
+            	GamePosition variationPosition = new GamePosition(variationBoard.getFen(), move, variantPly);
             	allPositions.add(index, variationPosition);
             	variationBoard.doMove(move);
             	index++;
@@ -297,8 +297,7 @@ public class Game {
             pos.setComment(comment);
         }
         
-        System.out.println("Game positions: \n" + allPositions.toString());
-    	
+        //System.out.println("Game positions: \n" + allPositions.toString());
     	
     	return allPositions;
     }
@@ -338,11 +337,11 @@ public class Game {
     
     public void setComment(Integer index, String comment) {
     	
-    	//TODO: extract graphics
         this.commentary.put(index, comment);
     }
-    
-    public Map<Integer, String> getGraphics() {
+   
+
+	public Map<Integer, String> getGraphics() {
 		return graphics;
 	}
 
