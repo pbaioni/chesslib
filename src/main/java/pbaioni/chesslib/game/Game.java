@@ -513,6 +513,15 @@ public class Game {
                 
                 sb.append(" " + sanMove);
                 
+                if (getCommentary() != null) {
+                    String comment = getCommentary().get(variantIndex);
+                    if (comment != null) {
+                        sb.append(" {");
+                        sb.append(comment.trim());
+                        sb.append("}");
+                    }
+                }
+                
                 final MoveList child = getVariations().get(variantIndex);
                 if (child != null) {
                     if (i == sanArray.length - 1 &&
