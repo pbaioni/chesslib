@@ -16,6 +16,15 @@
 
 package pbaioni.chesslib.game;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
+
 import pbaioni.chesslib.Board;
 import pbaioni.chesslib.move.Move;
 import pbaioni.chesslib.move.MoveConversionException;
@@ -23,11 +32,6 @@ import pbaioni.chesslib.move.MoveException;
 import pbaioni.chesslib.move.MoveList;
 import pbaioni.chesslib.pgn.PgnException;
 import pbaioni.chesslib.util.StringUtil;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Game Data Holder
@@ -74,6 +78,7 @@ public class Game {
         this.initialPosition = 0;
         this.setPosition(0);
         this.moveText = new StringBuilder();
+        this.variations = new HashMap<Integer, MoveList>();
     }
 
     private static String makeProp(String name, String value) {
@@ -245,6 +250,63 @@ public class Game {
      */
     public Map<Integer, MoveList> getVariations() {
         return variations;
+    }
+    
+    public List<GamePosition> getAllPositions(){
+    	
+    	List<GamePosition> allPositions = new ArrayList<>();
+    	Board board = new Board();
+    	Integer ply = 1;
+    	//inserting main line
+    	for(Move move : getHalfMoves()) {
+    		String uciMove = (move.getFrom().name() + move.getTo().name()).toLowerCase();
+    		allPositions.add(new GamePosition(board.getFen(), uciMove, ply));
+    		board.doMove(move);
+    		ply++;
+    	}
+    	
+    	//inserting variations
+    	Iterator it = getVariations().entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, MoveList> entry = (Map.Entry<Integer, MoveList>)it.next();
+            int index = entry.getKey();
+            MoveList variationMoves = entry.getValue();
+            it.remove(); // avoids a ConcurrentModificationException
+
+            Board variationBoard = new Board();
+            variationBoard.loadFromFen(variationMoves.getStartFen());
+            Integer variantPly = allPositions.get(index-1).getPly();
+            for(Move move : variationMoves) {
+            	String uciMove = (move.getFrom().name() + move.getTo().name()).toLowerCase();
+            	GamePosition variationPosition = new GamePosition(variationBoard.getFen(), uciMove, variantPly);
+            	allPositions.add(index, variationPosition);
+            	variationBoard.doMove(move);
+            	index++;
+            	variantPly++;
+            }
+        }
+        
+    	//inserting comments
+    	Iterator comIt = getCommentary().entrySet().iterator();
+        while (comIt.hasNext()) {
+            Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>)comIt.next();
+            int index = entry.getKey();
+            String comment = entry.getValue();
+            comIt.remove(); // avoids a ConcurrentModificationException
+            GamePosition pos = allPositions.get(index-1);
+            pos.setComment(comment);
+        }
+        
+        System.out.println("Game positions: \n" + allPositions.toString());
+    	
+    	
+    	return allPositions;
+    }
+    
+    private HashMap<String, String> addPositions(HashMap<String, String> allPositions, HashMap<String, MoveList> variants){
+    	
+    	
+    	return allPositions;
     }
 
     /**
