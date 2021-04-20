@@ -23,7 +23,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
+import java.util.Set;
+import java.util.TreeMap;
 
 import pbaioni.chesslib.Board;
 import pbaioni.chesslib.move.Move;
@@ -78,8 +79,8 @@ public class Game {
 		this.initialPosition = 0;
 		this.setPosition(0);
 		this.moveText = new StringBuilder();
-		this.variations = new HashMap<Integer, MoveList>();
-		this.commentary = new HashMap<Integer, String>();
+		this.variations = new TreeMap<Integer, MoveList>();
+		this.commentary = new TreeMap<Integer, String>();
 	}
 
 	private static String makeProp(String name, String value) {
@@ -267,21 +268,19 @@ public class Game {
 		}
 
 		// inserting variations
-		Iterator it = getVariations().entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<Integer, MoveList> entry = (Map.Entry<Integer, MoveList>) it.next();
-			int index = entry.getKey() - 1;
-			if (index < 0) {
-				index = 0;
+		//System.out.println(getVariations());
+		Set<Integer> variationsKeySet = getVariations().keySet();
+		for(Integer index : variationsKeySet) {
+			Integer insertionIndex = index-1;
+			if(insertionIndex < 0) {
+				insertionIndex = 0;
 			}
-			MoveList variationMoves = entry.getValue();
-			it.remove(); // avoids a ConcurrentModificationException
+			MoveList variationMoves = getVariations().get(index);
 
 			Board variationBoard = new Board();
 			variationBoard.loadFromFen(variationMoves.getStartFen());
-			Integer variantPly = allPositions.get(index).getPly();
+			Integer variantPly = allPositions.get(insertionIndex).getPly();
 			for (Move move : variationMoves) {
-				String uciMove = (move.getFrom().name() + move.getTo().name()).toLowerCase();
 				GamePosition variationPosition = new GamePosition(variationBoard.getFen(), move, variantPly);
 				allPositions.add(index, variationPosition);
 				variationBoard.doMove(move);
@@ -291,26 +290,20 @@ public class Game {
 		}
 
 		// inserting comments
-		Iterator comIt = getCommentary().entrySet().iterator();
-		while (comIt.hasNext()) {
-			Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) comIt.next();
-			int index = entry.getKey() - 1;
-			if (index < 0) {
-				index = 0;
+		//System.out.println(getCommentary());
+		Set<Integer> commentsKeySet = getCommentary().keySet();
+		for(Integer index : commentsKeySet) {
+			Integer insertionIndex = index-1;
+			if(insertionIndex < 0) {
+				insertionIndex = 0;
 			}
-			String comment = entry.getValue();
-			comIt.remove(); // avoids a ConcurrentModificationException
-			GamePosition pos = allPositions.get(index);
+			String comment = getCommentary().get(index);
+
+			GamePosition pos = allPositions.get(insertionIndex);
 			pos.setComment(comment);
 		}
 
-		// System.out.println("Game positions: \n" + allPositions.toString());
-
-		return allPositions;
-	}
-
-	private HashMap<String, String> addPositions(HashMap<String, String> allPositions,
-			HashMap<String, MoveList> variants) {
+		//System.out.println("Game positions: \n" + allPositions.toString());
 
 		return allPositions;
 	}
